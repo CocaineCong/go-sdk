@@ -1892,6 +1892,9 @@ func (c *streamableClientConn) processStream(ctx context.Context, requestSummary
 				if jsonResp.ID == forCall.ID {
 					return "", 0, true
 				}
+			} else {
+				// We should never get a response when forCall is nil (the standalone SSE request).
+				c.logger.Warn("received JSON-RPC response on standalone SSE stream", "id", jsonResp.ID)
 			}
 
 		case <-c.done:
